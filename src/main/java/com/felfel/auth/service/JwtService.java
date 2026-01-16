@@ -5,7 +5,6 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.crypto.SecretKey;
-import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +27,22 @@ public class JwtService {
      * Creates a signed JWT token containing user identity and authorities.
      */
     public String createToken(UserDetails user, String duration) {
-        long millis = Duration.parse("PT" + duration.toUpperCase()).toMillis();
+        long millis;
+        String input = duration.toLowerCase().trim();
+
+        // extract duration from string
+        long amount = Long.parseLong(input.replaceAll("[^0-9]", ""));
+
+        if (input.endsWith("m")) {
+            millis = amount * 60 * 1000;
+        } else if (input.endsWith("h")) {
+            millis = amount * 60 * 60 * 1000;
+        } else if (input.endsWith("d")) {
+            millis = amount * 24 * 60 * 60 * 1000;
+        } else {
+            // الافتراضي ثواني
+            millis = amount * 1000;
+        }
         List<String> roles = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).toList();
 
@@ -64,7 +78,7 @@ public class JwtService {
         return Jwts.parser()
                 .verifyWith(getSigningKey()) // بدلاً من setSigningKey
                 .build()
-                .parseSignedClaims(token)    // بدلاً من parseClaimsJws
+                .parseSignedClaims(token)    // بدلاً من parseClaimsJaws
                 .getPayload();               // بدلاً من getBody
     }
 }
