@@ -27,17 +27,19 @@ Traditional JWT implementations often require a database hit (`UserDetailsServic
 
 Add the dependency to your project (via JitPack or your local repository):
 
+https://jitpack.io/#Ahmedfelfel/felfel.jwt.starter
+
 ### Maven
 ```xml
 <dependency>
     <groupId>com.felfel</groupId>
     <artifactId>felfel-jwt-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 ### Gradle
 ```groovy
-implementation 'com.felfel:felfel-jwt-starter:1.0.0'
+implementation 'com.felfel:felfel-jwt-starter:1.0.2'
 ```
 ---
 ## ⚙️ Configuration
