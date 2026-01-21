@@ -3,13 +3,11 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.felfel</groupId>
     <artifactId>felfel-jwt-starter</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version> <!-- Version Bump -->
     <name>Felfel JWT Starter</name>
-    <description>Stateless JWT authentication library for Spring Boot 3.x applications</description>
-
+    <description>Universal Stateless JWT authentication library for Spring Boot 3.x (Servlet &amp; Reactive)</description>
     <properties>
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
@@ -18,29 +16,35 @@
         <jjwt.version>0.12.6</jjwt.version>
         <spring.boot.version>3.2.0</spring.boot.version>
     </properties>
-
     <dependencies>
+        <!-- GENERAL SECURITY (Shared) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
             <version>${spring.boot.version}</version>
             <scope>provided</scope>
         </dependency>
-
+        <!-- SERVLET STACK (Optional) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring.boot.version}</version>
-            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
-
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
             <version>6.0.0</version>
-            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
-
+        <!-- REACTIVE STACK (Optional) - NEW -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+            <version>${spring.boot.version}</version>
+            <optional>true</optional>
+        </dependency>
+        <!-- JWT LIBRARIES (Core) -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
@@ -66,7 +70,6 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>

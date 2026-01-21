@@ -1,15 +1,14 @@
 package com.felfel.auth.config;
 
 import com.felfel.auth.filter.JwtFilter;
+import com.felfel.auth.filter.ReactiveJwtFilter;
 import com.felfel.auth.service.JwtService;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-/**
- * Autoconfiguration class to bootstrap the JWT library within the consumer application.
- */
 @AutoConfiguration
 @EnableConfigurationProperties(JwtProperties.class)
 public class JwtAutoConfiguration {
@@ -24,9 +23,19 @@ public class JwtAutoConfiguration {
         return new JwtService(secret);
     }
 
+    // LOAD ONLY IF SERVLET APP (e.g., User Service)
     @Bean
+    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     @ConditionalOnMissingBean
     public JwtFilter jwtFilter(JwtService service) {
         return new JwtFilter(service);
+    }
+
+    // LOAD ONLY IF REACTIVE APP (e.g., API Gateway)
+    @Bean
+    @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+    @ConditionalOnMissingBean
+    public ReactiveJwtFilter reactiveJwtFilter(JwtService service) {
+        return new ReactiveJwtFilter(service);
     }
 }
